@@ -6,7 +6,7 @@
 /*   By: hhismans <hhismans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/09 14:35:09 by hhismans          #+#    #+#             */
-/*   Updated: 2014/12/15 00:05:34 by hhismans         ###   ########.fr       */
+/*   Updated: 2014/12/15 01:50:56 by hhismans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,26 @@ static void	update_tab(t_env *e)
 	}
 }
 
-void	insert_token(int tab[][6], int column, int elem)
+int		insert_token(int tab[][6], int column, int elem)
 {
 	int i;
 
 	i = 5;
-	while (i >= 0 && tab[column][i] != TOKEN_VOID)
+	while (i > 0 && tab[column][i] != TOKEN_VOID)
 	{
 		i--;
 	}
 	if (tab[column][i] == TOKEN_VOID)
 	{
 		tab[column][i] = elem;
+		return (1);
 	}
+	return (0);
+}
+
+void	puttab(int tab[][6])
+{
+	int i;
 	int j;
 
 	i = 0;
@@ -86,6 +93,7 @@ void	insert_token(int tab[][6], int column, int elem)
 		ft_putendl("");
 		i++;
 	}
+
 }
 void	set_env(t_env *e, char *title, int w, int h)
 {
@@ -98,7 +106,7 @@ void	set_env(t_env *e, char *title, int w, int h)
 			&(e->tx_yellow.w), &(e->tx_yellow.h));
 	e->tx_void.img = mlx_xpm_file_to_image(e->mlx, "./xpm/void.xpm",
 			&(e->tx_void.w), &(e->tx_void.h));
-	e->color_turn = YELLOW;
+	e->color_turn = TOKEN_YELLOW;
 	tab_init(e->tab);
 }
 
@@ -107,12 +115,15 @@ int		mouse_hook(int boutton, int x, int y, t_env *e)
 	printf("bouton = %d, x = %d, y = %d\n", boutton, x / 85, y);
 	if (boutton == LEFT_CLIC)
 	{
-		if (e->color_turn == TOKEN_RED)
-			e->color_turn = TOKEN_YELLOW;
-		else
-			e->color_turn = TOKEN_RED;
-		insert_token(e->tab, x / 85, e->color_turn);
+		if (insert_token(e->tab, x / 85, e->color_turn))
+		{
+			if (e->color_turn == TOKEN_RED)
+				e->color_turn = TOKEN_YELLOW;
+			else
+				e->color_turn = TOKEN_RED;
+		}
 		update_tab(e);
+		puttab(e->tab);
 	}
 	return (0);
 }
@@ -121,7 +132,8 @@ int		main(void)
 {
 	t_env e;
 
-	set_env(&e, "Puissance 4(2)", 700,700);
+	set_env(&e, "Puissance 4(2)", WX, WY);
+	update_tab(&e);
 	mlx_mouse_hook(e.win, mouse_hook, &e);
 	mlx_loop(e.mlx);
 	return (0);
