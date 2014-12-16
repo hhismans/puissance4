@@ -6,7 +6,7 @@
 /*   By: hhismans <hhismans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/09 14:50:56 by hhismans          #+#    #+#             */
-/*   Updated: 2014/12/15 00:08:08 by hhismans         ###   ########.fr       */
+/*   Updated: 2014/12/16 15:51:51 by hhismans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@
 #define TOKEN_YELLOW 2
 
 void	mlx_pixel_put_img(void *img_ptr, int x, int y, int color);
+int evalgame(int tab[][6], int TOKEN_COLOR);
+int		insert_token(int tab[][6], int column, int elem);
+int		recur(int tab[][6], int profondeur, int TOKEN_IA, int TOKEN_TURN);
+void	puttab(int tab[][6]);
 
 typedef struct	s_text
 {

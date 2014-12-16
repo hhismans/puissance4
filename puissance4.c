@@ -6,7 +6,7 @@
 /*   By: hhismans <hhismans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/09 14:35:09 by hhismans          #+#    #+#             */
-/*   Updated: 2014/12/15 01:50:56 by hhismans         ###   ########.fr       */
+/*   Updated: 2014/12/16 17:27:46 by hhismans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,16 +112,34 @@ void	set_env(t_env *e, char *title, int w, int h)
 
 int		mouse_hook(int boutton, int x, int y, t_env *e)
 {
+	int gameRED;
+	int gameYELLOW;
+
 	printf("bouton = %d, x = %d, y = %d\n", boutton, x / 85, y);
 	if (boutton == LEFT_CLIC)
 	{
-		if (insert_token(e->tab, x / 85, e->color_turn))
+		insert_token(e->tab, x / 85, e->color_turn);
+		/*
+		if(insert_token(e->tab, x / 85, e->color_turn))
 		{
 			if (e->color_turn == TOKEN_RED)
 				e->color_turn = TOKEN_YELLOW;
 			else
 				e->color_turn = TOKEN_RED;
-		}
+		}*/
+		gameRED = evalgame(e->tab, TOKEN_RED);
+		gameYELLOW = evalgame(e->tab, TOKEN_YELLOW);
+		ft_putstr("\nevalred = ");
+		ft_putnbr(gameRED);
+		ft_putstr("\neval yellow = ");
+		ft_putnbr(gameYELLOW);
+		ft_putstr("\nevalgame red = ");
+		ft_putnbr(gameRED - gameYELLOW);
+		ctoplay = recur(e->tab, 3, TOKEN_RED, TOKEN_RED);
+		ft_putstr("\nctoplay = ");
+		ft_putnbr(ctoplay);
+		ft_putendl("");
+		insert_token(e->tab, ctoplay, TOKEN_RED);
 		update_tab(e);
 		puttab(e->tab);
 	}
